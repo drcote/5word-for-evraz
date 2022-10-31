@@ -1,0 +1,12 @@
+.button {
+  color:white;
+  background: green;
+  border-radius: 6px;
+  text-align: center;
+  padding: 5px 0;
+  cursor: pointer;
+
+  &:active {
+    background: darkgreen;
+  }
+}
