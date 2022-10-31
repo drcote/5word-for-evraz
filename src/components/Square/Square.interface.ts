@@ -7,7 +7,6 @@ export interface SquareProps {
 }
 
 export enum TypeSquare {
-  Input = "input",
   NoLetter = "noLetter",
   ThisLetter = "thisLetter",
   ThereLetter = "thereLetter",

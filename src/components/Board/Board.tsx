@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Button, Square } from "..";
+import { Button, Square, InputBox } from "..";
 import { COUNT_WORDS, WORD_LENGTH } from "../../Static/consts";
 import convertRelativeIndexToWordIndex from "../../Utils/convertRelativeIndexToWordIndex";
 import { TypeSquare } from "../Square/Square.interface";
@@ -16,6 +16,7 @@ export const Board = () => {
   const [searchWord, setSearchWord] = useState<string[]>([]);
   const [words, setWords] = useState<string[]>([]);
   const [newLetters, setNewLetters] = useState<newLetterType[]>([]);
+  const [refInputs, setRefInputs] = useState<HTMLInputElement[]>([]);
 
   useEffect(() => {
     const word = LIBRARY[random(0, LIBRARY.length - 1)];
@@ -37,8 +38,8 @@ export const Board = () => {
         !isEmpty(searchWord) &&
         entireSearchWord === word
       ) {
-        alert("Ответ верный");
-        setWords([]);
+        // alert("Ответ верный");
+        // setWords([]);
       }
       if (words.length === WORD_LENGTH * COUNT_WORDS) {
         setWords([]);
@@ -61,10 +62,15 @@ export const Board = () => {
   };
 
   const addNewWord = (): void => {
-    newLetters.forEach((letter) =>
-      setWords((word) => [...word, letter.letter.toUpperCase()])
-    );
-    setNewLetters([]);
+    const newWord = newLetters.map((letter) => letter.letter).join("");
+    if (LIBRARY.includes(newWord)) {
+      newLetters.forEach((letter) =>
+        setWords((word) => [...word, letter.letter.toUpperCase()])
+      );
+      setNewLetters([]);
+    } else {
+      console.log("Не правильное слово");
+    }
   };
 
   const renderSquares = (count: number) => {
@@ -78,9 +84,16 @@ export const Board = () => {
       if (words[i] === undefined) {
         if (inputCount < WORD_LENGTH) {
           autoFocus = inputCount === 0 ? true : false;
-          typeSquare = TypeSquare.Input;
           inputCount++;
         }
+        content.push(
+          <InputBox
+            autoFocus={autoFocus}
+            key={i}
+            id={i}
+            addNewLetter={addNewLetter}
+          />
+        );
       } else {
         letter = words[i];
         const wordIndex = convertRelativeIndexToWordIndex(i);
@@ -93,17 +106,17 @@ export const Board = () => {
             typeSquare = TypeSquare.NoLetter;
           }
         }
+        content.push(
+          <Square
+            autoFocus={autoFocus}
+            key={i}
+            letter={letter}
+            id={i}
+            addNewLetter={addNewLetter}
+            typeSquare={typeSquare}
+          />
+        );
       }
-      content.push(
-        <Square
-          autoFocus={autoFocus}
-          key={i}
-          letter={letter}
-          id={i}
-          addNewLetter={addNewLetter}
-          typeSquare={typeSquare}
-        />
-      );
     }
     return content;
   };

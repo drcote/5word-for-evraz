@@ -1,5 +1,5 @@
 .square {
-  border-radius: 10px;
+  border-radius: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -11,15 +11,21 @@
 
   input {
     display: block;
-    height: calc(100% - 6px);
-    width: calc(100% - 6px);
+    height: calc(100% - 10px);
+    width: calc(100% - 10px);
     border: none;
     text-align: center;
     font-size: 1em;
     font-family: "Roboto";
     text-transform: uppercase;
+    margin: 0;
+    padding: 0;
 
     &:focus-visible {
+      outline: none;
+    }
+
+    &:focus {
       outline: none;
     }
   }
