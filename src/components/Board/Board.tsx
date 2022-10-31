@@ -6,6 +6,7 @@ import { TypeSquare } from "../Square/Square.interface";
 import { isEmpty, random } from "lodash";
 import "./Board.scss";
 import { LIBRARY } from "../../Static/wordLibrary5";
+import { Modal } from "@mui/material";
 
 interface newLetterType {
   id: number;
@@ -20,10 +21,9 @@ export const Board = () => {
 
   useEffect(() => {
     const word = LIBRARY[random(0, LIBRARY.length - 1)];
-    console.log(word);
     setSearchWord(word.toUpperCase().split(""));
   }, []);
-
+  console.log(searchWord);
   useEffect(() => {
     const entireSearchWord = searchWord.join("");
     const maxCountWords = words.length / WORD_LENGTH;
@@ -48,6 +48,18 @@ export const Board = () => {
   }, [words]);
 
   const addNewLetter = (letter: string, id: number): void => {
+    const focusNextElement = (absoluteId: number): void => {
+      const id = convertRelativeIndexToWordIndex(absoluteId);
+      if (id + 1 < WORD_LENGTH) {
+        refInputs[id + 1].focus();
+      }
+    };
+    const focusPrevElement = (absoluteId: number): void => {
+      const id = convertRelativeIndexToWordIndex(absoluteId);
+      if (id - 1 > 0) {
+        refInputs[id - 1].focus();
+      }
+    };
     const letterIndex = newLetters.findIndex((item) => item.id === id);
     if (letterIndex > -1) {
       const updateNewLetters = newLetters.map((item) => {
@@ -56,22 +68,39 @@ export const Board = () => {
         }
         return item;
       });
+      if (letter !== "") {
+        focusNextElement(id);
+      }
       return setNewLetters(updateNewLetters);
     }
+    focusNextElement(id);
     return setNewLetters((items) => [...items, { id, letter }]);
   };
 
   const addNewWord = (): void => {
-    const newWord = newLetters.map((letter) => letter.letter).join("");
+    const newWord = newLetters
+      .map((letter) => letter.letter)
+      .join("")
+      .toLowerCase();
+    console.log(newWord);
     if (LIBRARY.includes(newWord)) {
       newLetters.forEach((letter) =>
         setWords((word) => [...word, letter.letter.toUpperCase()])
       );
       setNewLetters([]);
+      setRefInputs([]);
     } else {
       console.log("Не правильное слово");
     }
   };
+
+  const saveInputRef = useCallback((e: HTMLInputElement) => {
+    if (e) {
+      setRefInputs((refs) => [...refs, e]);
+    }
+  }, []);
+
+  console.log(refInputs);
 
   const renderSquares = (count: number) => {
     let content: JSX.Element[] = [];
@@ -85,15 +114,18 @@ export const Board = () => {
         if (inputCount < WORD_LENGTH) {
           autoFocus = inputCount === 0 ? true : false;
           inputCount++;
+          content.push(
+            <InputBox
+              getRef={saveInputRef}
+              autoFocus={autoFocus}
+              key={i}
+              id={i}
+              addNewLetter={addNewLetter}
+            />
+          );
+        } else {
+          content.push(<Square key={i} typeSquare={TypeSquare.Empty} />);
         }
-        content.push(
-          <InputBox
-            autoFocus={autoFocus}
-            key={i}
-            id={i}
-            addNewLetter={addNewLetter}
-          />
-        );
       } else {
         letter = words[i];
         const wordIndex = convertRelativeIndexToWordIndex(i);
@@ -107,14 +139,7 @@ export const Board = () => {
           }
         }
         content.push(
-          <Square
-            autoFocus={autoFocus}
-            key={i}
-            letter={letter}
-            id={i}
-            addNewLetter={addNewLetter}
-            typeSquare={typeSquare}
-          />
+          <Square key={i} letter={letter} typeSquare={typeSquare} />
         );
       }
     }

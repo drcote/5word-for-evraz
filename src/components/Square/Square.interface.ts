@@ -1,9 +1,6 @@
 export interface SquareProps {
-  id: number;
   typeSquare: TypeSquare;
-  autoFocus?: boolean;
   letter?: string;
-  addNewLetter: (letter: string, id: number) => void;
 }
 
 export enum TypeSquare {
