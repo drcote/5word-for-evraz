@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "5 words",
+  "name": "5 букв",
   "icons": [
     {
       "src": "favicon.ico",
@@ -8,14 +8,14 @@
       "type": "image/x-icon"
     },
     {
-      "src": "logo192.png",
+      "src": "logo160.png",
       "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "160x160"
     },
     {
-      "src": "logo512.png",
+      "src": "logo418.png",
       "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "418x418"
     }
   ],
   "start_url": ".",

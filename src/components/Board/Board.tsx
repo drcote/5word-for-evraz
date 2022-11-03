@@ -19,11 +19,14 @@ export const Board = () => {
   const [newLetters, setNewLetters] = useState<newLetterType[]>([]);
   const [refInputs, setRefInputs] = useState<HTMLInputElement[]>([]);
 
+  const [showSearchWord, setShowSearchWord] = useState<boolean>(false); // вывести искомое слово
+  const [showNewLetters, setShowNewLetters] = useState<boolean>(false); // вывести введенное слово
+
   useEffect(() => {
     const word = LIBRARY[random(0, LIBRARY.length - 1)];
-    setSearchWord(word.toUpperCase().split(""));
+    setSearchWord(word.toLowerCase().split(""));
   }, []);
-  console.log(searchWord);
+  // console.log(searchWord);
   useEffect(() => {
     const entireSearchWord = searchWord.join("");
     const maxCountWords = words.length / WORD_LENGTH;
@@ -56,7 +59,7 @@ export const Board = () => {
     };
     const focusPrevElement = (absoluteId: number): void => {
       const id = convertRelativeIndexToWordIndex(absoluteId);
-      if (id - 1 > 0) {
+      if (id > 0) {
         refInputs[id - 1].focus();
       }
     };
@@ -70,6 +73,8 @@ export const Board = () => {
       });
       if (letter !== "") {
         focusNextElement(id);
+      } else {
+        focusPrevElement(id);
       }
       return setNewLetters(updateNewLetters);
     }
@@ -77,15 +82,18 @@ export const Board = () => {
     return setNewLetters((items) => [...items, { id, letter }]);
   };
 
+  console.log(newLetters);
+
   const addNewWord = (): void => {
+    newLetters.sort((a, b) => (a.id > b.id ? 1 : -1));
     const newWord = newLetters
       .map((letter) => letter.letter)
       .join("")
       .toLowerCase();
-    console.log(newWord);
+    // console.log(newWord);
     if (LIBRARY.includes(newWord)) {
       newLetters.forEach((letter) =>
-        setWords((word) => [...word, letter.letter.toUpperCase()])
+        setWords((word) => [...word, letter.letter.toLowerCase()])
       );
       setNewLetters([]);
       setRefInputs([]);
@@ -100,7 +108,7 @@ export const Board = () => {
     }
   }, []);
 
-  console.log(refInputs);
+  // console.log(refInputs);
 
   const renderSquares = (count: number) => {
     let content: JSX.Element[] = [];
@@ -121,6 +129,7 @@ export const Board = () => {
               key={i}
               id={i}
               addNewLetter={addNewLetter}
+              letter={newLetters.find((item) => item.id === i)?.letter}
             />
           );
         } else {
@@ -159,6 +168,48 @@ export const Board = () => {
         {renderSquares(WORD_LENGTH * COUNT_WORDS)}
       </div>
       {renderButton() ? <Button addNewWord={addNewWord} /> : null}
+      <div
+        style={{
+          marginTop: 30,
+          display: "flex",
+          alignContent: "space-between",
+          justifyContent: "space-between",
+        }}
+      >
+        <button onClick={() => setShowSearchWord(!showSearchWord)}>
+          Загаданное слово
+        </button>
+        <button onClick={() => setShowNewLetters(!showNewLetters)}>
+          Введенное слово
+        </button>
+      </div>
+      <div
+        style={{
+          display: "flex",
+          alignContent: "space-between",
+          justifyContent: "space-between",
+        }}
+      >
+        <div
+          style={{
+            fontSize: "25px",
+            visibility: showSearchWord ? "visible" : "hidden",
+          }}
+        >
+          {searchWord}
+        </div>
+        <div
+          style={{
+            fontSize: "25px",
+            visibility: showNewLetters ? "visible" : "hidden",
+          }}
+        >
+          {newLetters
+            .map((letter) => letter.letter)
+            .join("")
+            .toLowerCase()}
+        </div>
+      </div>
     </div>
   );
 };

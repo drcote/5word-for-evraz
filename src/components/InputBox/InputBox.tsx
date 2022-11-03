@@ -4,9 +4,9 @@ import clsx from "clsx";
 import "./InputBox.scss";
 
 export const InputBox: React.FC<InputBoxProps> = (props) => {
-  const { id, addNewLetter, autoFocus, getRef } = props;
+  const { id, letter, addNewLetter, autoFocus, getRef } = props;
   return (
-    <div className={clsx("square", "input")}>
+    <div className={clsx("inputBox", "input")}>
       <input
         ref={getRef}
         autoFocus={autoFocus}
@@ -14,6 +14,7 @@ export const InputBox: React.FC<InputBoxProps> = (props) => {
         maxLength={1}
         onChange={(e) => addNewLetter(e.target.value, id)}
         type="text"
+        value={letter ? letter : ""}
       />
     </div>
   );
