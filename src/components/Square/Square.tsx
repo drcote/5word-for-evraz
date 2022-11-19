@@ -4,7 +4,7 @@ import { SquareProps } from "./Square.interface";
 import "./Square.scss";
 
 export const Square: React.FC<SquareProps> = (props) => {
-  const {letter, typeSquare} = props;
+  const { letter, typeSquare } = props;
   return (
     <div className={clsx("square", typeSquare)}>
       <div>{letter}</div>

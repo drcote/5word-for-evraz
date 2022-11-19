@@ -1,12 +1,13 @@
 .button {
   color:white;
-  background: green;
+  background: #FAB82E;
   border-radius: 6px;
   text-align: center;
   padding: 5px 0;
   cursor: pointer;
+  font-size: 26px;
 
   &:active {
-    background: darkgreen;
+    background: #FDA610;
   }
 }

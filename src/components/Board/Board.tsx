@@ -3,30 +3,23 @@ import { Button, Square, InputBox } from "..";
 import { COUNT_WORDS, WORD_LENGTH } from "../../Static/consts";
 import convertRelativeIndexToWordIndex from "../../Utils/convertRelativeIndexToWordIndex";
 import { TypeSquare } from "../Square/Square.interface";
-import { isEmpty, random } from "lodash";
+import { isEmpty } from "lodash";
 import "./Board.scss";
 import { LIBRARY } from "../../Static/wordLibrary5";
-import { Modal } from "@mui/material";
+import { BoardProps } from "./Board.interface";
 
 interface newLetterType {
   id: number;
   letter: string;
 }
 
-export const Board = () => {
-  const [searchWord, setSearchWord] = useState<string[]>([]);
+export const Board: React.FC<BoardProps> = (props) => {
+  const { setEnd, setWin, searchWord } = props;
+
   const [words, setWords] = useState<string[]>([]);
   const [newLetters, setNewLetters] = useState<newLetterType[]>([]);
   const [refInputs, setRefInputs] = useState<HTMLInputElement[]>([]);
 
-  const [showSearchWord, setShowSearchWord] = useState<boolean>(false); // вывести искомое слово
-  const [showNewLetters, setShowNewLetters] = useState<boolean>(false); // вывести введенное слово
-
-  useEffect(() => {
-    const word = LIBRARY[random(0, LIBRARY.length - 1)];
-    setSearchWord(word.toLowerCase().split(""));
-  }, []);
-  // console.log(searchWord);
   useEffect(() => {
     const entireSearchWord = searchWord.join("");
     const maxCountWords = words.length / WORD_LENGTH;
@@ -41,11 +34,14 @@ export const Board = () => {
         !isEmpty(searchWord) &&
         entireSearchWord === word
       ) {
-        // alert("Ответ верный");
-        // setWords([]);
+        // выигрыш
+        setEnd(true);
+        setWin(true);
       }
       if (words.length === WORD_LENGTH * COUNT_WORDS) {
-        setWords([]);
+        // проигрыш
+        setWin(false);
+        setEnd(true);
       }
     }
   }, [words]);
@@ -82,15 +78,12 @@ export const Board = () => {
     return setNewLetters((items) => [...items, { id, letter }]);
   };
 
-  console.log(newLetters);
-
   const addNewWord = (): void => {
     newLetters.sort((a, b) => (a.id > b.id ? 1 : -1));
     const newWord = newLetters
       .map((letter) => letter.letter)
       .join("")
       .toLowerCase();
-    // console.log(newWord);
     if (LIBRARY.includes(newWord)) {
       newLetters.forEach((letter) =>
         setWords((word) => [...word, letter.letter.toLowerCase()])
@@ -107,8 +100,6 @@ export const Board = () => {
       setRefInputs((refs) => [...refs, e]);
     }
   }, []);
-
-  // console.log(refInputs);
 
   const renderSquares = (count: number) => {
     let content: JSX.Element[] = [];
@@ -163,53 +154,11 @@ export const Board = () => {
   }, [newLetters]);
 
   return (
-    <div>
+    <>
       <div className="boardTable">
         {renderSquares(WORD_LENGTH * COUNT_WORDS)}
       </div>
       {renderButton() ? <Button addNewWord={addNewWord} /> : null}
-      <div
-        style={{
-          marginTop: 30,
-          display: "flex",
-          alignContent: "space-between",
-          justifyContent: "space-between",
-        }}
-      >
-        <button onClick={() => setShowSearchWord(!showSearchWord)}>
-          Загаданное слово
-        </button>
-        <button onClick={() => setShowNewLetters(!showNewLetters)}>
-          Введенное слово
-        </button>
-      </div>
-      <div
-        style={{
-          display: "flex",
-          alignContent: "space-between",
-          justifyContent: "space-between",
-        }}
-      >
-        <div
-          style={{
-            fontSize: "25px",
-            visibility: showSearchWord ? "visible" : "hidden",
-          }}
-        >
-          {searchWord}
-        </div>
-        <div
-          style={{
-            fontSize: "25px",
-            visibility: showNewLetters ? "visible" : "hidden",
-          }}
-        >
-          {newLetters
-            .map((letter) => letter.letter)
-            .join("")
-            .toLowerCase()}
-        </div>
-      </div>
-    </div>
+    </>
   );
 };

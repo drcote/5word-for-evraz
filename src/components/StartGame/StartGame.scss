@@ -1,0 +1,19 @@
+.startGame {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 176px;
+
+  .startGameButton {
+    cursor: pointer;
+    padding: 20px;
+    background: #FAB82E;
+    border-radius: 2px;
+    color: #FFF;
+    text-align: center;
+
+    &:hover {
+      background: #FDA610;
+    }
+  }
+}

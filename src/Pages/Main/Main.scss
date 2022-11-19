@@ -1,12 +1,34 @@
-.main {
-   width: 300px;
+@import url('https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap');
+
+.headerMain {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+}
+
+
+.mainBoard {
+  width: 330px;
   margin: 0 auto;
   margin-top: 20px;
 }
 
-// @media screen and (max-width: 479px) {
-//   .main {
-//     width: 100%;
-//     height: 100%;
-//   }
-// }
+.timer {}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  flex-direction: column;
+  font-family: 'Rubik Mono One', sans-serif;
+  font-size: 30px;
+  color: #fff;
+  text-shadow: 10px 10px 30px #2400ff, -10px -10px 30px #7e2bd9;
+  -webkit-text-stroke: 2px #fc78ff;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 5px;
+}
+
+.themeWord {
+  font-size: 30px;
+  text-align: center;
+}
