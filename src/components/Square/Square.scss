@@ -4,32 +4,11 @@
   align-items: center;
   justify-content: center;
   text-transform: uppercase;
-  width: 52px;
+  width: 58px;
   height: 58px;
-}
 
-.input {
-  border: 3px solid orange;
-
-  input {
-    display: block;
-    height: calc(100% - 10px);
-    width: calc(100% - 10px);
-    border: none;
-    text-align: center;
-    font-size: 1em;
-    font-family: "Roboto";
-    text-transform: uppercase;
-    margin: 0;
-    padding: 0;
-
-    &:focus-visible {
-      outline: none;
-    }
-
-    &:focus {
-      outline: none;
-    }
+  div {
+    margin-top: 5px;
   }
 }
 

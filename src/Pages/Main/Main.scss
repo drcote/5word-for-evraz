@@ -1,13 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap');
 
+.main {
+  position: relative;
+}
+
 .headerMain {
   display: grid;
-  grid-template-columns: repeat(3,1fr);
+  grid-template-columns: repeat(3, 1fr);
 }
 
 
 .mainBoard {
-  width: 330px;
+  width: 360px;
   margin: 0 auto;
   margin-top: 20px;
 }

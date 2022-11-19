@@ -6,3 +6,5 @@ export * from "./Button/Button";
 export * from "./FirstGame/FirstGame";
 export * from "./StartGame/StartGame";
 export * from "./Rating/Rating";
+export * from "./Modal/Modal";
+export * from "./Information/Information";

@@ -5,6 +5,9 @@
   justify-content: center;
   text-transform: uppercase;
   background: #FFF;
+  width: 58px;
+  height: 58px;
+  font-family: "GT Eesti Pro Text";
 }
 
 .input {
@@ -18,9 +21,10 @@
     border: none;
     text-align: center;
     font-size: 1em;
-    font-family: "Roboto";
+    // font-family: "Roboto";
+    font-family: "GT Eesti Pro Text";
     text-transform: uppercase;
-    margin: 0;
+    margin: 5px 0 0 0;
     padding: 0;
 
     &:focus-visible {

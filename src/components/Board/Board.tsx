@@ -14,7 +14,7 @@ interface newLetterType {
 }
 
 export const Board: React.FC<BoardProps> = (props) => {
-  const { setEnd, setWin, searchWord } = props;
+  const { searchWord, isStart, setEnd, setWin } = props;
 
   const [words, setWords] = useState<string[]>([]);
   const [newLetters, setNewLetters] = useState<newLetterType[]>([]);
@@ -146,6 +146,16 @@ export const Board: React.FC<BoardProps> = (props) => {
     return content;
   };
 
+  const renderSquaresEmpty = (count: number) => {
+    let i = 0;
+    const content: JSX.Element[] = [];
+    while (i < count) {
+      content.push(<Square key={i} letter="" typeSquare={TypeSquare.Empty} />);
+      i++;
+    }
+    return content;
+  };
+
   const renderButton = useCallback(() => {
     return (
       newLetters.length === WORD_LENGTH &&
@@ -156,7 +166,9 @@ export const Board: React.FC<BoardProps> = (props) => {
   return (
     <>
       <div className="boardTable">
-        {renderSquares(WORD_LENGTH * COUNT_WORDS)}
+        {isStart
+          ? renderSquares(WORD_LENGTH * COUNT_WORDS)
+          : renderSquaresEmpty(WORD_LENGTH * COUNT_WORDS)}
       </div>
       {renderButton() ? <Button addNewWord={addNewWord} /> : null}
     </>

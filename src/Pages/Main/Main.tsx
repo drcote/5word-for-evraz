@@ -1,7 +1,14 @@
-import { Modal } from "@fluentui/react";
 import { random } from "lodash";
 import React, { useState, useEffect, useRef } from "react";
-import { Board, StartGame, Rating, FirstGame } from "../../components";
+import {
+  Board,
+  StartGame,
+  Rating,
+  FirstGame,
+  Modal,
+  Information,
+} from "../../components";
+import { TypeMessage } from "../../components/Information/Infortation.interface";
 import { StatusGame } from "../../components/Rating/Rating.interface";
 import { LIBRARY } from "../../Static/wordLibrary5";
 import convertSecToTime from "../../Utils/convertSecToTime";
@@ -13,6 +20,7 @@ export const Main: React.FC = () => {
   const [time, setTime] = useState<number>(0);
   const [isWin, setIsWin] = useState<boolean>(false);
   const [isFirstGame, setIsFirstGame] = useState<boolean>(false);
+  const [isInformation, setIsInformation] = useState<boolean>(false);
   const [searchWord, setSearchWord] = useState<string[]>([]);
   const timer = useRef<NodeJS.Timer>();
 
@@ -36,7 +44,7 @@ export const Main: React.FC = () => {
   }, [isEnd, isWin]);
 
   return (
-    <div>
+    <div className="main">
       {/* <div className="logo">Игра "5 букв"</div> */}
       <div className="headerMain">
         <div></div>
@@ -49,20 +57,28 @@ export const Main: React.FC = () => {
           setEnd={(end) => setIsEnd(end)}
           setWin={(win) => setIsWin(win)}
           searchWord={searchWord}
+          isStart={isStart}
         />
       </div>
-      <Modal isOpen={!isStart}>
+      <Modal isHide={isStart}>
         <StartGame onStart={() => setIsStart(true)} />
       </Modal>
-      <Modal isOpen={isEnd}>
+      <Modal isHide={!isEnd}>
         <Rating
           status={isWin ? StatusGame.WIN : StatusGame.LOSS}
           searchWord={searchWord}
           time={time}
+          onClose={() => {
+            setIsEnd(false);
+            setIsInformation(true);
+          }}
         />
       </Modal>
-      <Modal isOpen={isFirstGame}>
-        <FirstGame />
+      <Modal isHide={!isFirstGame}>
+        <FirstGame onClose={() => setIsFirstGame(false)} />
+      </Modal>
+      <Modal isHide={!isInformation}>
+        <Information typeMessage={TypeMessage.Start} />
       </Modal>
     </div>
   );
