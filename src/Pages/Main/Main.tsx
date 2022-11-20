@@ -19,7 +19,7 @@ export const Main: React.FC = () => {
   const [isEnd, setIsEnd] = useState<boolean>(false);
   const [time, setTime] = useState<number>(0);
   const [isWin, setIsWin] = useState<boolean>(false);
-  const [isFirstGame, setIsFirstGame] = useState<boolean>(false);
+  const [isFirstGame, setIsFirstGame] = useState<boolean>(true);
   const [isInformation, setIsInformation] = useState<boolean>(false);
   const [searchWord, setSearchWord] = useState<string[]>([]);
   const timer = useRef<NodeJS.Timer>();

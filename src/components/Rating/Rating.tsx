@@ -1,12 +1,13 @@
 import React from "react";
 import convertSecToTime from "../../Utils/convertSecToTime";
 import { Square } from "..";
-import { RatingProps, StatusGame } from "./Rating.interface";
+import { RatingProps } from "./Rating.interface";
 import "./Rating.scss";
 import { TypeSquare } from "../Square/Square.interface";
 
 export const Rating: React.FC<RatingProps> = (props) => {
   const { status, searchWord, time, onClose } = props;
+
   return (
     <div className="rating">
       <div className="formClose" onClick={onClose}>
