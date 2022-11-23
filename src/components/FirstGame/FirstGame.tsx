@@ -5,7 +5,7 @@ import "./FirstGame.scss";
 import { FirstGameProps } from "./FirstGameInterface";
 
 export const FirstGame: React.FC<FirstGameProps> = (props) => {
-  const { onClose } = props;
+  const { onClose, onStart } = props;
   const refFirstGame = useRef<HTMLDivElement>(null);
 
   const onOutsideClick = (e: any) => {
@@ -61,6 +61,9 @@ export const FirstGame: React.FC<FirstGameProps> = (props) => {
         </div>
       </div>
       <div className="desc">При перезагрузке и закрытии окна, игра завершится автоматически.</div>
+      <div style={{marginTop:'30px'}}>
+        <div className="startGameButton" onClick={onStart}>Понятно, начнём</div>
+      </div>
     </div>
   );
 };

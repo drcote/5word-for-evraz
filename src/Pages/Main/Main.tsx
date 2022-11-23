@@ -1,4 +1,3 @@
-import { random } from "lodash";
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import {
   createNewRecordRating,
@@ -73,7 +72,6 @@ export const Main: React.FC = () => {
         // Первая игра
         setIsFirstGame(true);
       }
-
       const userRecordToday = userRecords.find(
         (record) => record.date.toDateString() === new Date().toDateString()
       );
@@ -81,29 +79,8 @@ export const Main: React.FC = () => {
         setIsInformation(true);
         setInformation({ typeMessage: TypeMessage.End, message: "" });
       } else {
-        await createNewRecordRating(
-          BASE_URL,
-          LIST_RATING_GUID,
-          {
-            userEmail: user.email,
-            time: 3600,
-            isWin: false,
-            group: word.group,
-            date: new Date(),
-          }
-        );
-        const ratingListNew = await getRating(BASE_URL, LIST_RATING_GUID);
-        const ratingToday = await ratingListNew.find(
-          (item) => item.date.toDateString() === new Date().toDateString()
-        );
-        if (ratingToday) {
-          setGameSettings({
-            group: word.group,
-            theme: word.theme,
-            userId: ratingToday.id,
-          });
-          setSearchWord(word.word.toLowerCase().split(""));
-        }
+        setGameSettings({ group: word.group, theme: word.theme, userId: 0 });
+        setSearchWord(word.word.toLowerCase().split(""));
       }
 
       if (userRecordToday && futureWord) {
@@ -148,6 +125,27 @@ export const Main: React.FC = () => {
       timer.current = setInterval(() => {
         setTime((prevTime) => prevTime + 1);
       }, 1000);
+    }
+    if (isStart) {
+      const startingGame = async () => {
+        console.log(gameSettings);
+        console.log(userEmail);
+        await createNewRecordRating(BASE_URL, LIST_RATING_GUID, {
+          userEmail: userEmail,
+          time: 3600,
+          isWin: false,
+          group: gameSettings.group,
+          date: new Date(),
+        });
+        const ratingListNew = await getRating(BASE_URL, LIST_RATING_GUID);
+        const ratingToday = ratingListNew.find(
+          (item) => item.date.toDateString() === new Date().toDateString()
+        );
+        if (ratingToday) {
+          setGameSettings({ ...gameSettings, userId: ratingToday.id });
+        }
+      };
+      startingGame();
     }
   }, [isStart]);
 
@@ -199,7 +197,13 @@ export const Main: React.FC = () => {
         />
       </Modal>
       <Modal isHide={!isFirstGame}>
-        <FirstGame onClose={() => setIsFirstGame(false)} />
+        <FirstGame
+          onClose={() => setIsFirstGame(false)}
+          onStart={() => {
+            setIsFirstGame(false);
+            setIsStart(true);
+          }}
+        />
       </Modal>
       <Modal isHide={!isInformation}>
         <Information information={information} />

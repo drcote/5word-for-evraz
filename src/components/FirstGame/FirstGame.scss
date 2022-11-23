@@ -43,4 +43,17 @@
       stroke: #ed7817;
     }
   }
+
+  .startGameButton {
+    cursor: pointer;
+    padding: 2px 25px;
+    background: #FAB82E;
+    border-radius: 2px;
+    color: #FFF;
+    text-align: center;
+
+    &:hover {
+      background: #FDA610;
+    }
+  }
 }

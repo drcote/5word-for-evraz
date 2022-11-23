@@ -1,3 +1,4 @@
 export interface FirstGameProps {
-  onClose: ()=>void;
+  onClose: () => void;
+  onStart: () => void;
 }
