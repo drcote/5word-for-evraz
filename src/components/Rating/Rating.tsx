@@ -33,7 +33,7 @@ export const Rating: React.FC<RatingProps> = (props) => {
         ))}
       </div>
       <div>Потраченное время: {convertSecToTime(time)}</div>
-      <div>Место в рейтинге: 1</div>
+      {/* <div>Место в рейтинге: 1</div> */}
     </div>
   );
 };

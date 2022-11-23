@@ -60,6 +60,7 @@ export const FirstGame: React.FC<FirstGameProps> = (props) => {
           Эта буква есть в слове и стоит на своем месте
         </div>
       </div>
+      <div className="desc">При перезагрузке и закрытии окна, игра завершится автоматически.</div>
     </div>
   );
 };
